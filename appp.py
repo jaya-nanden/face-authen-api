@@ -5,6 +5,7 @@ from PIL import Image
 # Embedding All Image Files 
 import face_recognition
 import cv2
+import os
 import os.path
 import numpy
 from os import path
@@ -87,10 +88,6 @@ def process_image():
         
         I = numpy.array(img)
         I=cv2.cvtColor(I,cv2.COLOR_BGR2RGB)
-        """cv2.imshow("out",I)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-        """
 
         img_enc = face_recognition.face_encodings(I)[0]
         results = face_recognition.compare_faces(known_encodings,img_enc)
@@ -131,28 +128,3 @@ def process_image():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-    """img1=cv2.imread(I)
-    cv2.imshow("out",img1)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-"""
-    #print(I)
-""" img_enc = face_recognition.face_encodings(I)[0]
-    results = face_recognition.compare_faces(known_encodings,img_enc)
-    dist=face_recognition.face_distance(known_encodings, img_enc)
-
-    name = "nil"
-    f=0
-    #print(results)
-    for i in range(len(results)):
-        if (results[i]):
-            f=1
-            name = known_names[i]
-            name=name[:len(name)-5]
-            min_dist=dist[i]
-            min_dist=round((100-min_dist),2)
-            min_dist=str(min_dist)
-    if(f==0):
-        name="Did not match"
-        min_dist=-1"""
