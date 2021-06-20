@@ -63,17 +63,21 @@ cors = CORS(app)
 
 # Calling the embedding function before the request itself
 #create_embedding()
+@app.route("/", methods=["GET", "POST"])
+def index():
+    return "Hello !"
 
 @app.route("/predict", methods=["POST"])
 def process_image():
 
 
-    response = flask.Response()
-    response.headers["Access-Control-Allow-Origin"] = "*"
+    # response = flask.Response()
+    # response.headers["Access-Control-Allow-Origin"] = "*"
     rawData = request.data
     # print(rawData)
     dictData = json.loads(rawData.decode('utf-8'))
     roll_no = dictData['rollno']
+    # print(roll_no)
     known_encodings,known_names=create_embedding(roll_no)
     if(known_encodings!=0 and known_names!=0):
 
@@ -114,12 +118,8 @@ def process_image():
         roll_no="not_found"
         status="error"
 
-
-
-
-    
-
     data = {'rollno': str(roll_no),  'match_status': status} # Your data in JSON-serializable type
+    # print(data)
     response = app.response_class(response=json.dumps(data),
                                   status=200,
                                   mimetype='application/json')
@@ -130,7 +130,7 @@ def process_image():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)
 
     """img1=cv2.imread(I)
     cv2.imshow("out",img1)
