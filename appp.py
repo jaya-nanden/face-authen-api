@@ -26,6 +26,8 @@ from tensorflow.keras.layers import MaxPooling2D
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
+from spreadsheet_update import append_data, read_data
+
 # Create the Emotion Detection model
 model = Sequential()
 
@@ -115,6 +117,25 @@ cors = CORS(app)
 def index():
     return render_template('create.html')
 
+@app.route("/read", methods=["GET", "POST"])
+def read():
+    emotion_dict = {"Angry": 0, "Disgusted": 0, "Fearful": 0, "Happy": 0, "Neutral": 0 , "Sad": 0,  "Surprised": 0, "IDK": 0}
+
+    df = read_data()
+    count_dict = df['emotion'].value_counts().to_dict()
+    # print(count_dict)
+    for key, value in count_dict.items():
+        emotion_dict[key] = value
+
+    # print(emotion_dict)
+    response = app.response_class(response=json.dumps(emotion_dict),
+                                  status=200,
+                                  mimetype='application/json')
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+
+    return response
+
 @app.route("/predict", methods=["POST"])
 def process_image():
     rawData = request.data
@@ -137,7 +158,7 @@ def process_image():
 
         if(face_recognition.face_encodings(I) == []):
             # print("no face_detected")
-            status = "No Face Detected"
+            status = "No Face Captured"
         else:
             img_enc = face_recognition.face_encodings(I)[0]
             results = face_recognition.compare_faces(known_encodings, img_enc)
@@ -167,7 +188,12 @@ def process_image():
     else:
         status = "error"
 
-    print(face_detected, status)
+    # print(face_detected, status)
+
+    # Appending Data to csv
+    if(status == "Yes"):
+        append_data([status, emotion])
+    
     data = {'rollno': str(roll_no),  'match_status': status, 'emotion': emotion} # Your data in JSON-serializable type
     # print(data)
     response = app.response_class(response=json.dumps(data),
