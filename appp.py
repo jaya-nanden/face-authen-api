@@ -4,7 +4,12 @@ from PIL import Image
 
 import os
 import os.path
-import numpy
+
+import os,sys
+import numpy as np
+from os import path
+
+import cv2
 
 import json
 import base64
@@ -22,8 +27,8 @@ known_names = []
 
 def create_embedding(roll_no):
     try:
-        known_dir = './known/'+str(roll_no)
-
+        known_dir = './known/' + str(roll_no)
+        
         def read_img(path):
             img = cv2.imread(path)
             (h,w) = img.shape[:2]
@@ -34,7 +39,7 @@ def create_embedding(roll_no):
 
 
         for file in os.listdir(known_dir):
-            img = read_img(known_dir +'/'+ file)
+            img = read_img(str(known_dir +'/'+ file))
             img_enc = face_recognition.face_encodings(img)[0]
             known_encodings.append(img_enc)
             known_names.append(file.split('.')[0])
@@ -153,4 +158,4 @@ def process_image():
 
 
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run(debug = False)

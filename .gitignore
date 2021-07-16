@@ -1,0 +1,6 @@
+# videos folder
+/videos
+
+
+#cache
+__pycache__
