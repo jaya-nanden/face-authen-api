@@ -6,6 +6,7 @@ import os
 import os.path
 
 import os,sys
+import numpy
 import numpy as np
 from os import path
 
