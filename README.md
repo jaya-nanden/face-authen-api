@@ -40,6 +40,11 @@ Once the user is recognized, the API returns a success message and can be redire
    
    We have created a dataset of known people, stored their images on separate folders with roll number as the folder name. When a student enter the roll number, we can use that roll number to acess his/her folder which has 5 images of him/her and compare the encoded values of the test image with the 5 images and thereby we will be able to authericate the student.
 
+
+
+https://user-images.githubusercontent.com/65902731/126609469-dab0b730-55c8-4d1b-add6-d1ce1a0d2a3a.MP4
+
+
 ### Website Live: https://jaya-nanden.github.io/MyCamu-Clone/
 
 ### API: https://face-authen-api.herokuapp.com/predict
